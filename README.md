@@ -1,0 +1,2 @@
+# GAS_convinient_scheduler
+ノンプロ研の便利なスケジューラー用
