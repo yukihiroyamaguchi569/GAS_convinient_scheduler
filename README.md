@@ -1,9 +1,9 @@
 # GAS_convinient_scheduler
 ノンプロ研の便利なスケジューラー用
 
-![1](https://user-images.githubusercontent.com/64948431/147401424-0a05ddfa-d185-481f-865b-4b4639404904.png)
+![ユースケース図](https://user-images.githubusercontent.com/64948431/147707390-a97765db-47eb-4695-8ccf-2e7e988e7b9a.png)
 
-![2](https://user-images.githubusercontent.com/64948431/147401433-4b1bfb10-2087-4100-bab1-1fe16e6ecc41.png)
+![クラス図](https://user-images.githubusercontent.com/64948431/147706856-775faf9b-e322-4387-93b3-2ca1d40c3ba9.png)
 
 ![3](https://user-images.githubusercontent.com/64948431/147401435-fc4a3648-77df-41ef-8606-43e14b727a50.png)
 
