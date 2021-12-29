@@ -12,7 +12,7 @@ function getMemeberNames(){
 }
 
 function setMemberName(){
-  //　チェックが入ったメンバーに一覧を、入力画面シートの1行目に展開する
+  //　チェックが入ったメンバーの一覧を、入力画面シートの1行目に展開する
 
 }
 
