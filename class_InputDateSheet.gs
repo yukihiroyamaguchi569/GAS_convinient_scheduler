@@ -12,28 +12,25 @@ class InputDateSheet {
   }
 
 
-  // メンバー選択シートの、チェックが入ったメンバー名の一次元配列を受け取り、１行目に展開するメソッド
+  // メンバー選択シートの、チェックが入ったメンバー名の二次元配列を受け取り、１行目に展開するメソッド
   setCheckedMembers(members) {
 
-    this.sheet.getRange(1, 3, 1, members.length).setValues(members);
+    this.sheet.getRange(1, 3, 1, members[0].length).setValues(members);
     return `${members.length}名のメンバーを記入しました`;
   }
 
 
   // 結果を入れていない人 （c列以降の２行目以下のセルが空の人）のSlackIDの配列を作成する
-  mekeUnansweredMemberList() {
+  makeUnansweredMemberList() {
     const values = this.getAllValues();
 
     //縦横入れ替え
     const newMembers = values[0].map((_, i) => values.map(record => record[i]));
+    const filterd = newMembers.filter(newMember => newMember.includes(``));
 
+    const slackIds = filterd.map(record => record[0]);
 
-    const member = values[0]; //1人目
-
-
-    const slackIds = [];
-
-    return slackIds;
+    return slackIds.flat();
   }
 
 }
@@ -52,12 +49,13 @@ function testInputDateSheet() {
   console.log(inputDataSheet.sheet.getName());
 
   // シートの全てのレコーズを取得するメソッド
-  console.log(inputDataSheet.sheet.getAllValues());
+  console.log(inputDataSheet.getAllValues());
 
-  // チェックが入ったメンバー名の一次元配列を受け取り、１行目に展開するメソッド
-  console.log(inputDataSheet.setCheckedMembers());
+  // チェックが入ったメンバー名の二次元配列を受け取り、１行目に展開するメソッド
+  const members = [[`Tom`,`Bob`]];
+  console.log(inputDataSheet.setCheckedMembers(members));
 
   // 結果を入れていない人 （c列以降の２行目以下のセルが空の人）のSlackIDの配列を作成する
-  console.log(inputDataSheet.mekeUnansweredMemberList());
+  console.log(inputDataSheet.makeUnansweredMemberList());
 
 }
