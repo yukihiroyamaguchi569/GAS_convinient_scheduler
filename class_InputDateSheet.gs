@@ -13,20 +13,19 @@ class InputDateSheet {
 
 
   // メンバー選択シートの、チェックが入ったメンバー名の一次元配列を受け取り、１行目に展開するメソッド
-  setCheckedMembers() {
+  setCheckedMembers(members) {
 
-    const s = new SelectMemberSheet();
-    const members = s.getCheckedMembers(); // []
-
-
-    return 'チェックが入ったメンバーを記入しました';
+    this.sheet.getRange(1, 3, 1, members.length).setValues(members);
+    return `${members.length}名のメンバーを記入しました`;
   }
 
 
   // 結果を入れていない人 （c列以降の２行目以下のセルが空の人）のSlackIDの配列を作成する
   mekeUnansweredMemberList() {
+    const values = this.getAllValues();
+    const slackIds = [];
 
-    return
+    return slackIds;
   }
 
 }
