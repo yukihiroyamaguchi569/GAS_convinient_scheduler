@@ -23,6 +23,14 @@ class InputDateSheet {
   // 結果を入れていない人 （c列以降の２行目以下のセルが空の人）のSlackIDの配列を作成する
   mekeUnansweredMemberList() {
     const values = this.getAllValues();
+
+    //縦横入れ替え
+    const newMembers = values[0].map((_, i) => values.map(record => record[i]));
+
+
+    const member = values[0]; //1人目
+
+
     const slackIds = [];
 
     return slackIds;
