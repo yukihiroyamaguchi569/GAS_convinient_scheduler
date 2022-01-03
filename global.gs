@@ -12,3 +12,22 @@ const SHEET_INFO = Object.freeze({
     NAME: 'チャンネル名一覧'
   }
 });
+
+const COSTUM_MENU = [
+  {
+    name: 'チャンネルリストを更新',
+    functionName: 'updateSlackChannels'
+  },
+  {
+    name: 'チャンネルのメンバーをメンバー選択画面にセット',
+    functionName: 'setMemberList'
+  },
+  {
+    name: 'チェックの入ったメンバーを入力画面にセット',
+    functionName: 'setMemberName'
+  },
+  {
+    name: 'Slackに投稿',
+    functionName: 'postInputRequest'
+  }
+];
