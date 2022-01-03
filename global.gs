@@ -25,5 +25,9 @@ const COSTUM_MENU = [
   {
     name: 'チェックの入ったメンバーを入力画面にセット',
     functionName: 'setMemberName'
+  },
+  {
+    name: 'Slackに投稿',
+    functionName: 'postInputRequest'
   }
 ];
