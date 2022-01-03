@@ -27,7 +27,8 @@ function testSelectMemberSheet() {
 
   //　チャンネル名（メンバー選択シートのB1セル）を取得するメソッド
   console.log(selectMemberSheet.getChannelName());
-
+  
+ 
   const testArray = ['Tom', 'Bob', 'Alice'];
 
   //　1次元配列で受け取ったメンバー配列をB列B4セル以下にsetValuesするメソッド
