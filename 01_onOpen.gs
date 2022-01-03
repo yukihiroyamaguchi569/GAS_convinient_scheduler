@@ -1,9 +1,8 @@
 function onOpen() {
 
   //カスタムメニュー作成
-
-  //チャンネル名を取得してチャンネル名一覧シートに展開する
-
+  SpreadsheetApp.getActiveSpreadsheet().addMenu('便利なスケジューラー',COSTUM_MENU);
+    
 }
 
 
