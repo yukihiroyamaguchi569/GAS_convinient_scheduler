@@ -1,7 +1,34 @@
 class SelectMemberSheet {
-  constructor() {
-    const ss = SpreadsheetApp.openById(`1YmODv7zavFFdmjNYREBYEpO6lzJecHVIXTfPsM54CMQ`);
-    this.sheet = ss.getSheetByName(SHEET_INFO.SELECT_MEMBER.NAME);
+  /**
+   * シートに関するコンストラクタ
+   * @constructor
+   * @param {SpreadsheetApp.sheet} sheet - 対象となるシート。デフォルト引数は「SpreadsheetApp.getActiveSheet()」
+   * @param {number} headerRows - ヘッダー行の数。デフォルト引数は「1」
+   */
+  constructor(sheet = SpreadsheetApp.getActiveSheet(), headerRows = 1) {
+    /** @type {SpreadsheetApp.Sheet} */
+    this.sheet = sheet;
+    /** @type {SpreadsheetApp.Sheet} */
+    this.headerRows = headerRows;
+  }
+
+  /**
+ * ヘッダー部分を除いた実データ部分を取得するメソッド
+ * @return {Array.<Array.<number|string>>} 実データ
+ */
+  getDataValues() {
+    const values = this.getDataRangeValues();
+    const dataValues = values.filter((_, i) => i >= this.headerRows);
+    return dataValues;
+  }
+
+    /**
+   * シートの値すべて取得するメソッド 
+   * @return {Array.<Array.<number|string>>} シートの値
+   */
+  getDataRangeValues() {
+    const dataRangeValues = this.sheet.getDataRange().getValues();
+    return dataRangeValues;
   }
 
   //　チャンネル名（メンバー選択シートのB1セル）を取得するメソッド
@@ -20,22 +47,24 @@ class SelectMemberSheet {
 
   // チェックのはいったメンバーのスラック名を二次元配列で返すメソッド
   getCheckedMembers() {
+    const values = this.getDataValues();
+    const result = values.filter(value => value[3]).map(value => value[0]);
+    return [result];
 
   };
 
 }
 
 function testSelectMemberSheet() {
-  const selectMemberSheet = new SelectMemberSheet();
+  const selectMemberSheet = new SelectMemberSheet(SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_INFO.SELECT_MEMBER.NAME),SHEET_INFO.SELECT_MEMBER.HEADER_ROWS);
 
-  //　インスタンスの確認
-  // console.log(selectMemberSheet);
+  // 　シート名の確認
+  console.log(selectMemberSheet.sheet.getName());
 
   //　チャンネル名（メンバー選択シートのB1セル）を取得するメソッド
-  console.log(selectMemberSheet.getChannelName());
-  
- 
-  const testArray = ['Tom', 'Bob', 'Alice'];
+  console.log('getChannelName:', selectMemberSheet.getChannelName());
+
+  // const testArray = ['Tom', 'Bob', 'Alice'];
   //　1次元配列で受け取ったメンバー配列をB列B4セル以下にsetValuesするメソッド
   // console.log(selectMemberSheet.setMembersList(testArray));
 

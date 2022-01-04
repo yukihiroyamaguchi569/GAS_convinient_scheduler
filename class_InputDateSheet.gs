@@ -14,7 +14,6 @@ class InputDateSheet {
 
   // メンバー選択シートの、チェックが入ったメンバー名の二次元配列を受け取り、１行目に展開するメソッド
   setCheckedMembers(members) {
-
     this.sheet.getRange(1, 3, 1, members[0].length).setValues(members);
     return `${members.length}名のメンバーを記入しました`;
   }

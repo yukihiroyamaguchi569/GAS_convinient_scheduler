@@ -27,9 +27,9 @@ function setMemberList() {
 //　チェックが入ったメンバーの一覧を、入力画面シートの1行目に展開する
 function setMemberName() {
 
-  const selectMemberSheet = new SelectMemberSheet();
+  const selectMemberSheet = new SelectMemberSheet(SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_INFO.SELECT_MEMBER.NAME),SHEET_INFO.SELECT_MEMBER.HEADER_ROWS);
   const checkedMembersNames = selectMemberSheet.getCheckedMembers();
-
+  console.log(checkedMembersNames);
   const inputDataSheet = new InputDateSheet();
   inputDataSheet.setCheckedMembers(checkedMembersNames);
 
@@ -39,3 +39,4 @@ function setMemberName() {
 function postInputRequest() {
 
 }
+
