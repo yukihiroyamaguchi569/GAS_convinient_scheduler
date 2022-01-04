@@ -1,23 +1,21 @@
 class SlackApi {
-
   constructor() {
     this.prop = new Properties();
     this.token = this.prop.get('USER_OAUTH_TOKEN');
     this.botToken = this.prop.get('BOT_USER_OAUTH_TOKEN');
   }
 
-
   /**
-   * 
+   * Slackワークスペースの中からアクティブなチャンネル（archiveされていないチャンネル）の
+   * チャンネル名とIDを持つ配列をつくるメソッド
+   * @return {Array} アクティブなチャンネル（archiveされていないチャンネル）のチャンネル名とIDを持つ配列
    */
   getActiveChannelsValues() {
     const channelValues = this.getChannelsValues();
     const activeChannelsValues = channelValues.filter(record => record[2] === false).
       map(record => [record[0], record[1]]);
-
     return activeChannelsValues;
   }
-
 
   /**
     * Slack チャンネルの必要な情報を持つ配列をつくるメソッド
@@ -68,8 +66,8 @@ class SlackApi {
   }
 
   /**
-    * Slack チャンネルの必要な情報を持つ配列をつくるメソッド
-    * @return {Array.<Array.<string|boolean>} slack チャンネルの必要な情報を持つ配列
+    * Slack 名,	Slack 表示名,	Slack IDの情報を持つ二次元配列を取得するメソッド
+    * @return {Array} Slack 名,	Slack 表示名,	Slack IDの情報を持つ二次元配列
     */
   getMembersValues() {
     const members = this.getUsersList().members;
@@ -165,18 +163,25 @@ class SlackApi {
     return object;
   }
 
+  /**
+   * channelId を受け取って、Slack 名	とSlack 表示名を二次元配列で返す関数
+   * @param {string} channelId - 特定のチャンネルのID
+   * @param {array} slackNameValues - Slack 名	とSlack 表示名の二次元配列
+   */
   getSlackNameValuesById(channelId) {
     const memberIds = this.getConversationsMemberIds(channelId);
     const membersValues = this.getMembersValues();
     const slackNameValues = memberIds.map(memberId => membersValues.
       find(record => record[2] === memberId)).
-      map(record => [record[0],record[1]]);
+      map(record => [record[0], record[1]]);
     return slackNameValues;
   }
 }
 
 
-
+/**
+ * テスト用関数
+ */
 
 function testSlackApi() {
 
@@ -185,7 +190,6 @@ function testSlackApi() {
   const slackNames = slackApi.getSlackNameValuesById('C02Q523KNQY');
 
   return;
-
 
   // チャンネル名ー一覧とチャンネル名とIDを返す
   console.log(SlackApi.getAllChannels());
@@ -200,4 +204,3 @@ function testSlackApi() {
   console.log(SlackApi.post());
 
 }
-
