@@ -6,11 +6,6 @@ function onOpen() {
 }
 
 
-//　チェックが入ったメンバーの一覧を、入力画面シートの1行目に展開する
-function setMemberName() {
-
-}
-
 //「チャンネル名一覧」シートを更新
 function updateSlackChannels() {
   const slackApi = new SlackApi();
@@ -29,8 +24,18 @@ function setMemberList() {
   sheet.setValuesHeaderRowAfter(slackNameValues);
 }
 
+//　チェックが入ったメンバーの一覧を、入力画面シートの1行目に展開する
+function setMemberName() {
+
+  const selectMemberSheet = new SelectMemberSheet();
+  const checkedMembersNames = selectMemberSheet.getCheckedMembers();
+
+  const inputDataSheet = new InputDateSheet();
+  inputDataSheet.setCheckedMembers(checkedMembersNames);
+
+}
+
 // Slackに入力依頼を投稿
 function postInputRequest() {
-
 
 }
