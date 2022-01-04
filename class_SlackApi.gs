@@ -173,7 +173,7 @@ class SlackApi {
     const membersValues = this.getMembersValues();
     const slackNameValues = memberIds.map(memberId => membersValues.
       find(record => record[2] === memberId)).
-      map(record => [record[0], record[1]]);
+      map(record => [record[0], record[1], record[2]]);
     return slackNameValues;
   }
 }
