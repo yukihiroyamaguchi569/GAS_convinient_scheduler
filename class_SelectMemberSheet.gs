@@ -45,13 +45,33 @@ class SelectMemberSheet {
     return true;
   };
 
-  // チェックのはいったメンバーのスラック名を二次元配列で返すメソッド
+  // チェックのはいったメンバーのスラックIDを二次元配列で返すメソッド
   getCheckedMembers() {
     const values = this.getDataValues();
     const result = values.filter(value => value[3]).map(value => value[0]);
     return [result];
 
   };
+
+    // チェックのはいったメンバーのスラックIDを二次元配列で返すメソッド
+  getCheckedMembersIDs() {
+    const values = this.getDataValues();
+    const result = values.filter(value => value[3]).map(value => value[2]);
+    return [result];
+
+  };
+
+    /**
+    * ユーザーのSlack表示名を受け取って、slackIDを返すメソッド
+    * 
+    * @param {string}  ユーザーのslackName
+    * @return  {string} ユーザーのslackID
+    */
+  convertUserSlackNameToSlackId(userSlackName) {
+    const dataValues = this.getDataValues();
+    const result =dataValues.filter(value => value[0] === userSlackName).map(value => value[2]);
+    return result;
+  }
 
 }
 
@@ -70,6 +90,10 @@ function testSelectMemberSheet() {
 
   // チェックのはいったメンバーのスラック名を二次元配列で返すメソッド
   console.log(selectMemberSheet.getCheckedMembers());
+
+  //ユーザーのSlack表示名を受け取って、slackIDを返すメソッド
+  const userName ='高橋宣成';
+  console.log(userName, selectMemberSheet.convertUserSlackNameToSlackId(userName));
 
 }
 

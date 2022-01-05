@@ -1,3 +1,5 @@
+const SS = SpreadsheetApp.getActiveSpreadsheet();
+
 /** @enum {string} */
 const SHEET_INFO = Object.freeze({
   INPUT_DATE: {
@@ -10,6 +12,11 @@ const SHEET_INFO = Object.freeze({
   },
   SLACK_CHANNEL: {
     NAME: 'チャンネル名一覧'
+  },
+  POST_SLACK:{
+    NAME: 'Slack投稿用',
+    MAIL_BODY_RANGE_FIRST_POST: 'A2',
+    MAIL_BODY_RANGE_PRESS_ANSWER: 'B2'
   }
 });
 

@@ -137,7 +137,7 @@ class SlackApi {
 
   /**
     * fetch メソッド用のパラメーターを生成するメソッド
-    * @param {string} method - GET or POST メソッド。デフォルト引数は GET
+    * @param {string} method - GET or げｔ メソッド。デフォルト引数は GET
     * @param {string} token - 利用するトークン。デフォルト引数は this.botToken
     * @return {Object} fetch メソッド用のパラメーター
     */
@@ -175,6 +175,16 @@ class SlackApi {
       find(record => record[2] === memberId)).
       map(record => [record[0], record[1], record[2]]);
     return slackNameValues;
+  }
+
+  /**
+   * slack ID からメンションを作成する関数
+   * @param {string} slackId - メンションする対象の slack ID
+   * @return {string} メンション
+   */
+  getUserMention(slackId) {
+    const mention = '<@' + slackId + '>';
+    return mention;
   }
 }
 
