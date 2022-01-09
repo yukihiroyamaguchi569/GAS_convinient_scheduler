@@ -14,7 +14,7 @@ const SHEET_INFO = Object.freeze({
     NAME: 'チャンネル名一覧'
   },
   POST_SLACK:{
-    NAME: 'Slack投稿用',
+    NAME: 'Slackに投稿',
     MAIL_BODY_RANGE_FIRST_POST: 'A2',
     MAIL_BODY_RANGE_PRESS_ANSWER: 'B2'
   }
@@ -22,19 +22,20 @@ const SHEET_INFO = Object.freeze({
 
 const COSTUM_MENU = [
   {
-    name: '1. チャンネルリストを更新',
-    functionName: 'updateSlackChannels'
-  },
-  {
-    name: '2. チャンネルのメンバーをメンバー選択画面にセット',
+    name: '1. チャンネルメンバー更新',
     functionName: 'setMemberList'
   },
   {
-    name: '3. チェックの入ったメンバーを入力画面にセット',
+    name: '2. チェックの入ったメンバーを入力画面にセット',
     functionName: 'setMemberName'
   },
   {
-    name: '4. Slackに投稿',
+    name: '3. Slackに投稿',
     functionName: 'postInputRequest'
+  },
+    {
+    name: '9. チャンネルリストを更新',
+    functionName: 'updateSlackChannels'
   }
+
 ];

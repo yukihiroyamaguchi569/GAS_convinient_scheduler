@@ -37,7 +37,6 @@ function setMemberName() {
 
 /** NOTE webhookURLを設定しておかないといけない
 *  Slackに入力依頼を投稿
-* 
 */
 function postInputRequest() {
 
@@ -56,41 +55,43 @@ function postInputRequest() {
 
   const spreadSheetUrl = SS.getUrl();
 
-  // const message = checkedMemberMentions + mailBodyFromSheet + spreadSheetUrl;
-  const message = 'ただいまリファクタリング中';
-  console.log('message:', message);
+  const message = checkedMemberMentions + mailBodyFromSheet + spreadSheetUrl;
+
+  slackMessage.send(message);
+
+  setTriggerTommorow8AM();
+
+}
+
+/** NOTE webhookURLを設定しておかないといけない
+*  Slackに入力依頼を投稿
+* 
+*/
+function postRemind() {
+
+  //チェックの入ったメンバーのslackIDを取得
+  const selectMemberSheet = new SelectMemberSheet(SS.getSheetByName(SHEET_INFO.SELECT_MEMBER.NAME), SHEET_INFO.SELECT_MEMBER.HEADER_ROWS);
+  const inputDataSheet = new InputDateSheet();
+  const unresponsiveMembersName = inputDataSheet.makeUnansweredMemberList();
+  const unresponsiveMembersIds = unresponsiveMembersName.map(value => selectMemberSheet.convertUserSlackNameToSlackId(value));
+
+  if (unresponsiveMembersIds.length === 0) return;
+
+  const webhookUrl = new Properties().get('WEBHOOK_URL');
+  const slackMessage = new SlackMessage(webhookUrl);
+
+  //slackIDをメンションに変換
+  const unresponsiveMembersMentions = unresponsiveMembersIds.map(value => slackMessage.getUserMention(value)).join();
+
+  const postSlackSheet = new SelectMemberSheet(SS.getSheetByName(SHEET_INFO.POST_SLACK.NAME));
+  const mailBodyFromSheet = postSlackSheet.sheet.getRange(SHEET_INFO.POST_SLACK.MAIL_BODY_RANGE_PRESS_ANSWER).getValues().flat().join();
+
+  const spreadSheetUrl = SS.getUrl();
+
+  const message = unresponsiveMembersMentions + mailBodyFromSheet + spreadSheetUrl;
 
   slackMessage.send(message);
 
 }
-
-// /** NOTE webhookURLを設定しておかないといけない
-// *  Slackに入力依頼を投稿
-// * 
-// */
-// function postRemind() {
-
-//   //チェックの入ったメンバーのslackIDを取得
-//   const selectMemberSheet = new SelectMemberSheet(SS.getSheetByName(SHEET_INFO.SELECT_MEMBER.NAME), SHEET_INFO.SELECT_MEMBER.HEADER_ROWS);
-//   const checkedMembersIds = selectMemberSheet.getCheckedMembersIDs().flat();
-
-//   const webhookUrl = new Properties().get('WEBHOOK_URL');
-//   const slackMessage = new SlackMessage(webhookUrl);
-
-//   //slackIDをメンションに変換
-//   const checkedMemberMentions = checkedMembersIds.map(value => slackMessage.getUserMention(value)).join();
-
-//   const postSlackSheet = new SelectMemberSheet(SS.getSheetByName(SHEET_INFO.POST_SLACK.NAME));
-//   const mailBodyFromSheet = postSlackSheet.sheet.getRange(SHEET_INFO.POST_SLACK.MAIL_BODY_RANGE_FIRST_POST).getValues().flat().join();
-
-//   const spreadSheetUrl = SS.getUrl();
-
-//   // const message = checkedMemberMentions + mailBodyFromSheet + spreadSheetUrl;
-//   const message = 'ただいまリファクタリング中';
-//   console.log('message:', message);
-
-//   slackMessage.send(message);
-
-// }
 
 

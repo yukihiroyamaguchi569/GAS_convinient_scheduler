@@ -177,15 +177,15 @@ class SlackApi {
     return slackNameValues;
   }
 
-  /**
-   * slack ID からメンションを作成する関数
-   * @param {string} slackId - メンションする対象の slack ID
-   * @return {string} メンション
-   */
-  getUserMention(slackId) {
-    const mention = '<@' + slackId + '>';
-    return mention;
-  }
+  // /**
+  //  * slack ID からメンションを作成する関数
+  //  * @param {string} slackId - メンションする対象の slack ID
+  //  * @return {string} メンション
+  //  */
+  // getUserMention(slackId) {
+  //   const mention = '<@' + slackId + '>';
+  //   return mention;
+  // }
 }
 
 

@@ -54,6 +54,6 @@ function testProperty(){
 }
 
 function setProperty() {
-  const webhookUrl = 'https://hooks.slack.com/services/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';
+
   Properties.set('WEBHOOK_URL', webhookUrl);
 }
