@@ -13,8 +13,8 @@ const SHEET_INFO = Object.freeze({
   SLACK_CHANNEL: {
     NAME: 'チャンネル名一覧'
   },
-  POST_SLACK:{
-    NAME: 'Slackに投稿',
+  POST_SLACK_MESSAGE:{
+    NAME: 'Slack投稿メッセージ',
     MAIL_BODY_RANGE_FIRST_POST: 'A2',
     MAIL_BODY_RANGE_PRESS_ANSWER: 'B2'
   }

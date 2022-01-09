@@ -1,10 +1,7 @@
 function onOpen() {
-
   //カスタムメニュー作成
   SS.addMenu('便利なスケジューラー', COSTUM_MENU);
-
 }
-
 
 //「チャンネル名一覧」シートを更新
 function updateSlackChannels() {
@@ -35,37 +32,22 @@ function setMemberName() {
 
 }
 
-/** NOTE webhookURLを設定しておかないといけない
-*  Slackに入力依頼を投稿
+/** 
+*  Slackに入力依頼メッセージを投稿
 */
 function postInputRequest() {
 
-  //チェックの入ったメンバーのslackIDを取得
   const selectMemberSheet = new SelectMemberSheet(SS.getSheetByName(SHEET_INFO.SELECT_MEMBER.NAME), SHEET_INFO.SELECT_MEMBER.HEADER_ROWS);
   const checkedMembersIds = selectMemberSheet.getCheckedMembersIDs().flat();
+  const [messageBody, slackMessage] = makeMessageBody_(checkedMembersIds, SHEET_INFO.POST_SLACK_MESSAGE.MAIL_BODY_RANGE_FIRST_POST);
 
-  const webhookUrl = new Properties().get('WEBHOOK_URL');
-  const slackMessage = new SlackMessage(webhookUrl);
-
-  //slackIDをメンションに変換
-  const checkedMemberMentions = checkedMembersIds.map(value => slackMessage.getUserMention(value)).join();
-
-  const postSlackSheet = new SelectMemberSheet(SS.getSheetByName(SHEET_INFO.POST_SLACK.NAME));
-  const mailBodyFromSheet = postSlackSheet.sheet.getRange(SHEET_INFO.POST_SLACK.MAIL_BODY_RANGE_FIRST_POST).getValues().flat().join();
-
-  const spreadSheetUrl = SS.getUrl();
-
-  const message = checkedMemberMentions + mailBodyFromSheet + spreadSheetUrl;
-
-  slackMessage.send(message);
-
+  slackMessage.send(messageBody);
   setTriggerTommorow8AM();
 
 }
 
 /** NOTE webhookURLを設定しておかないといけない
-*  Slackに入力依頼を投稿
-* 
+*  Slackに入力リマインドメッセージを投稿
 */
 function postRemind() {
 
@@ -73,25 +55,38 @@ function postRemind() {
   const selectMemberSheet = new SelectMemberSheet(SS.getSheetByName(SHEET_INFO.SELECT_MEMBER.NAME), SHEET_INFO.SELECT_MEMBER.HEADER_ROWS);
   const inputDataSheet = new InputDateSheet();
   const unresponsiveMembersName = inputDataSheet.makeUnansweredMemberList();
+
+  //Slack名をSlackIDに変換
   const unresponsiveMembersIds = unresponsiveMembersName.map(value => selectMemberSheet.convertUserSlackNameToSlackId(value));
 
   if (unresponsiveMembersIds.length === 0) return;
 
+  const [messageBody, slackMessage] = makeMessageBody_(unresponsiveMembersIds, SHEET_INFO.POST_SLACK_MESSAGE.MAIL_BODY_RANGE_PRESS_ANSWER);
+
+  slackMessage.send(messageBody);
+
+}
+
+/**
+*  メッセージの本文を作成するメソッド
+*  (NOTE webhookURLを設定しておかないといけない)
+* @param {Array} memberIds メンションするメンバーのID
+* @param {String} messageRange メッセージの入っているシートレンジ
+*/
+function makeMessageBody_(memberIds, messageRange) {
   const webhookUrl = new Properties().get('WEBHOOK_URL');
   const slackMessage = new SlackMessage(webhookUrl);
 
   //slackIDをメンションに変換
-  const unresponsiveMembersMentions = unresponsiveMembersIds.map(value => slackMessage.getUserMention(value)).join();
+  const memberMentions = memberIds.map(value => slackMessage.getUserMention(value)).join();
 
-  const postSlackSheet = new SelectMemberSheet(SS.getSheetByName(SHEET_INFO.POST_SLACK.NAME));
-  const mailBodyFromSheet = postSlackSheet.sheet.getRange(SHEET_INFO.POST_SLACK.MAIL_BODY_RANGE_PRESS_ANSWER).getValues().flat().join();
+  //メッセージの本文をシートから取得
+  const postSlackMessageSheet = SS.getSheetByName(SHEET_INFO.POST_SLACK_MESSAGE.NAME);
+  const messageBody = postSlackMessageSheet.getRange(messageRange).getValues().flat().join();
 
   const spreadSheetUrl = SS.getUrl();
 
-  const message = unresponsiveMembersMentions + mailBodyFromSheet + spreadSheetUrl;
+  const message = memberMentions + messageBody + spreadSheetUrl;
 
-  slackMessage.send(message);
-
+  return [message, slackMessage];
 }
-
-
