@@ -78,9 +78,12 @@ function postRemind() {
   //Slack名をSlackIDに変換
   const unresponsiveMembersIds = unresponsiveMembersName.map(value => selectMemberSheet.convertUserSlackNameToSlackId(value));
 
+  //回答していないメンバーがいなければ終了
   if (unresponsiveMembersIds.length === 0) return;
 
   makeMessageAndPostSlack_(unresponsiveMembersIds, SHEET_INFO.POST_SLACK_MESSAGE.MAIL_BODY_RANGE_PRESS_ANSWER);
+
+  setTriggerTommorow8AM();
 
 }
 

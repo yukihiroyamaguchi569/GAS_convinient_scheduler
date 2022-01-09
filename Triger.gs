@@ -1,3 +1,6 @@
+/**
+* 翌日の朝8時にトリガーをセットする
+*/
 function setTriggerTommorow8AM() {
 
   deleteTriggers('postRemind');
@@ -8,10 +11,14 @@ function setTriggerTommorow8AM() {
   time.setMinutes('0');
 
   ScriptApp.newTrigger('postRemind').timeBased().at(time).create();
-
 }
 
 
+/**
+* 指定した関数名のトリガーを削除する
+*
+* @param {String} functionName トリガーの関数名
+*/
 function deleteTriggers(functionName) {
   
   const triggers = ScriptApp.getProjectTriggers();
@@ -20,5 +27,5 @@ function deleteTriggers(functionName) {
       ScriptApp.deleteTrigger(trigger);
     }
   }
-
 }
+
