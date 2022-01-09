@@ -26,13 +26,13 @@ const COSTUM_MENU = [
     functionName: 'setMemberList'
   },
   {
-    name: '2. チェックの入ったメンバーを入力画面にセット',
-    functionName: 'setMemberName'
+    name: '2. Slackへ投稿',
+    functionName: 'setMemberNamesToInpuSheetAndPostSlack'
   },
-  {
-    name: '3. Slackに投稿',
-    functionName: 'postInputRequest'
-  },
+  // {
+  //   name: '3. Slackに投稿',
+  //   functionName: 'postInputRequest'
+  // },
     {
     name: '9. チャンネルリストを更新',
     functionName: 'updateSlackChannels'

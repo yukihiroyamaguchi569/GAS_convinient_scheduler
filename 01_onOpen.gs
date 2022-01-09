@@ -21,14 +21,28 @@ function setMemberList() {
   sheet.setValuesHeaderRowAfter(slackNameValues);
 }
 
-//　チェックが入ったメンバーの一覧を、入力画面シートの1行目に展開する
-function setMemberName() {
+/**
+* チェックが入ったメンバーの一覧を、入力画面シートの1行目に展開する
+* Slackに募集メッセージを投稿する
+*/
+function setMemberNamesToInpuSheetAndPostSlack() {
 
+  //チェックが入ったメンバー名の配列を取得
   const selectMemberSheet = new SelectMemberSheet(SS.getSheetByName(SHEET_INFO.SELECT_MEMBER.NAME), SHEET_INFO.SELECT_MEMBER.HEADER_ROWS);
   const checkedMembersNames = selectMemberSheet.getCheckedMembers();
-  console.log(checkedMembersNames);
+
+  console.log(checkedMembersNames[0].length);
+
+  if (checkedMembersNames[0].length === 0 ){
+    Browser.msgBox(`メンバーが１人も選択されていません。チェックを入れてください`);
+    return;
+  }
+
+  //入力画面シートの1行目に、チェックの入ったメンバー配列を貼り付ける
   const inputDataSheet = new InputDateSheet();
   inputDataSheet.setCheckedMembers(checkedMembersNames);
+
+  postInputRequest();
 
 }
 
@@ -39,9 +53,14 @@ function postInputRequest() {
 
   const selectMemberSheet = new SelectMemberSheet(SS.getSheetByName(SHEET_INFO.SELECT_MEMBER.NAME), SHEET_INFO.SELECT_MEMBER.HEADER_ROWS);
   const checkedMembersIds = selectMemberSheet.getCheckedMembersIDs().flat();
-  const [messageBody, slackMessage] = makeMessageBody_(checkedMembersIds, SHEET_INFO.POST_SLACK_MESSAGE.MAIL_BODY_RANGE_FIRST_POST);
 
-  slackMessage.send(messageBody);
+  // if (checkedMembersIds.length === 0) {
+  //   Browser.msgBox ('送りたいメンバーにチェックを入れてください');
+  //   return;
+  // };
+
+  makeMessageAndPostSlack_(checkedMembersIds, SHEET_INFO.POST_SLACK_MESSAGE.MAIL_BODY_RANGE_FIRST_POST);
+
   setTriggerTommorow8AM();
 
 }
@@ -61,9 +80,7 @@ function postRemind() {
 
   if (unresponsiveMembersIds.length === 0) return;
 
-  const [messageBody, slackMessage] = makeMessageBody_(unresponsiveMembersIds, SHEET_INFO.POST_SLACK_MESSAGE.MAIL_BODY_RANGE_PRESS_ANSWER);
-
-  slackMessage.send(messageBody);
+  makeMessageAndPostSlack_(unresponsiveMembersIds, SHEET_INFO.POST_SLACK_MESSAGE.MAIL_BODY_RANGE_PRESS_ANSWER);
 
 }
 
@@ -73,7 +90,7 @@ function postRemind() {
 * @param {Array} memberIds メンションするメンバーのID
 * @param {String} messageRange メッセージの入っているシートレンジ
 */
-function makeMessageBody_(memberIds, messageRange) {
+function makeMessageAndPostSlack_(memberIds, messageRange) {
   const webhookUrl = new Properties().get('WEBHOOK_URL');
   const slackMessage = new SlackMessage(webhookUrl);
 
@@ -88,5 +105,7 @@ function makeMessageBody_(memberIds, messageRange) {
 
   const message = memberMentions + messageBody + spreadSheetUrl;
 
-  return [message, slackMessage];
+  slackMessage.send(message);
+
+  return;
 }
