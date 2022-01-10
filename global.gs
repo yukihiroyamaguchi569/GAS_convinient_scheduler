@@ -1,3 +1,9 @@
+/**
+* GitHub https://github.com/yukihiroyamaguchi569/GAS_convinient_scheduler/blob/main/README.md
+*
+*/
+
+
 const SS = SpreadsheetApp.getActiveSpreadsheet();
 
 /** @enum {string} */
