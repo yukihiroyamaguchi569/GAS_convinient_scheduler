@@ -9,4 +9,5 @@ https://docs.google.com/spreadsheets/d/1YmODv7zavFFdmjNYREBYEpO6lzJecHVIXTfPsM54
 
 ![クラス図](https://user-images.githubusercontent.com/64948431/147706856-775faf9b-e322-4387-93b3-2ca1d40c3ba9.png)
 
-![業務フロー図](https://user-images.githubusercontent.com/64948431/149657509-ed6b6514-29c8-434a-8091-e033eaa1bd18.png)
+![業務フロー図](https://user-images.githubusercontent.com/64948431/149657595-07a77149-96bb-4cd6-8492-b91866763394.png)
+
