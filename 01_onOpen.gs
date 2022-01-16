@@ -3,6 +3,10 @@ function onOpen() {
   SS.addMenu('便利なスケジューラー', COSTUM_MENU);
 }
 
+/**
+* 「チャンネル名一覧」のチャンネル名を更新
+*
+*/
 //「チャンネル名一覧」シートを更新
 function updateSlackChannels() {
   const slackApi = new SlackApi();
@@ -11,15 +15,63 @@ function updateSlackChannels() {
   sheet.setValuesHeaderRowAfter(activeChannelsValues);
 }
 
-//チャンネルに存在するメンバーを「メンバー選択」シートの4行目以降にペースト
+/**
+* チャンネルに存在するメンバーを「メンバー選択」シートの4行目以降にペースト
+* チャンネルに存在するメンバーのメンバー名とSlack名を縦に結合して「メンバー名リスト」シートに貼り付ける
+*/
 function setMemberList() {
   const slackApi = new SlackApi();
-  const sheet = new Sheet(SS.getSheetByName(SHEET_INFO.SELECT_MEMBER.NAME), SHEET_INFO.SELECT_MEMBER.HEADER_ROWS);
+  const selectMemberSheet = new Sheet(SS.getSheetByName(SHEET_INFO.SELECT_MEMBER.NAME), SHEET_INFO.SELECT_MEMBER.HEADER_ROWS);
 
-  const channelId = sheet.getValue(SHEET_INFO.SELECT_MEMBER.CHANNEL_ID_RANGE);
+  const channelId = selectMemberSheet.getValue(SHEET_INFO.SELECT_MEMBER.CHANNEL_ID_RANGE);
   const slackNameValues = slackApi.getSlackNameValuesById(channelId);
-  sheet.setValuesHeaderRowAfter(slackNameValues);
+  selectMemberSheet.setValuesHeaderRowAfter(slackNameValues);
+
+  //「メンバー名リスト」シートに貼り付け
+  const memberNames = slackNameValues.map(value => [value[0]]);
+  const slackNames = slackNameValues.map(value => [value[1]]);
+  const memberNamesAndSlackNames = memberNames.concat(slackNames);
+
+  const memberNameListSheet = new Sheet(SS.getSheetByName(SHEET_INFO.MEMBER_LIST.NAME));
+  memberNameListSheet.setValuesHeaderRowAfter(memberNamesAndSlackNames);
 }
+
+/**
+* チャンネルに存在するメンバーを「メンバー選択」シートの4行目以降にペースト
+* チャンネルに存在するメンバーのメンバー名とSlack名を縦に結合して「メンバー名リスト」シートに貼り付ける
+*/
+function setMemberListOnEdit() {
+  // シート定義
+  const sheet = SS.getActiveSheet();     // 編集したシート（タブ）
+  const range = sheet.getActiveRange();                // 編集した範囲
+  const col = range.getColumnIndex();                // 編集した列
+  const row = range.getRowIndex();                   // 編集した行
+  const value = range.getValue();                      // 編集した値
+
+  if (sheet.getName() === SHEET_INFO.SELECT_MEMBER.NAME &&
+    range.getA1Notation() === SHEET_INFO.SELECT_MEMBER.CHANNEL_NAME_RANGE) {
+
+    //「メンバー選択」シートに貼り付け
+    const slackApi = new SlackApi();
+    const selectMemberSheet = new Sheet(SS.getSheetByName(SHEET_INFO.SELECT_MEMBER.NAME), SHEET_INFO.SELECT_MEMBER.HEADER_ROWS);
+    const channelId = selectMemberSheet.getValue(SHEET_INFO.SELECT_MEMBER.CHANNEL_ID_RANGE);
+    const slackNameValues = slackApi.getSlackNameValuesById(channelId);
+    selectMemberSheet.setValuesHeaderRowAfter(slackNameValues);
+
+    //「メンバー名リスト」シートに貼り付け
+    const memberNames = slackNameValues.map(value => [value[0]]);
+    const slackNames = slackNameValues.map(value => [value[1]]);
+    const memberNamesAndSlackNames = memberNames.concat(slackNames);
+
+    const memberNameListSheet = new Sheet(SS.getSheetByName(SHEET_INFO.MEMBER_LIST.NAME));
+    memberNameListSheet.setValuesHeaderRowAfter(memberNamesAndSlackNames);
+
+  }
+
+
+}
+
+
 
 /**
 * チェックが入ったメンバーの一覧を、入力画面シートの1行目に展開する
@@ -31,9 +83,7 @@ function setMemberNamesToInpuSheetAndPostSlack() {
   const selectMemberSheet = new SelectMemberSheet(SS.getSheetByName(SHEET_INFO.SELECT_MEMBER.NAME), SHEET_INFO.SELECT_MEMBER.HEADER_ROWS);
   const checkedMembersNames = selectMemberSheet.getCheckedMembers();
 
-  console.log(checkedMembersNames[0].length);
-
-  if (checkedMembersNames[0].length === 0 ){
+  if (checkedMembersNames[0].length === 0) {
     Browser.msgBox(`メンバーが１人も選択されていません。チェックを入れてください`);
     return;
   }

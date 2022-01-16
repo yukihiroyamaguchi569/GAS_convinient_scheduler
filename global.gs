@@ -14,6 +14,7 @@ const SHEET_INFO = Object.freeze({
   SELECT_MEMBER: {
     NAME: 'メンバー選択',
     HEADER_ROWS: 3,
+    CHANNEL_NAME_RANGE: 'B1',
     CHANNEL_ID_RANGE: 'C1'
   },
   SLACK_CHANNEL: {
@@ -23,16 +24,23 @@ const SHEET_INFO = Object.freeze({
     NAME: 'Slack投稿メッセージ',
     MAIL_BODY_RANGE_FIRST_POST: 'A2',
     MAIL_BODY_RANGE_PRESS_ANSWER: 'B2'
+  },
+  CHANNEL_LIST:{
+    NAME:'チャンネル名一覧'
+  },
+  MEMBER_LIST:{
+    NAME:'メンバー名リスト'
   }
+
 });
 
 const COSTUM_MENU = [
+  // {
+  //   name: '1. チャンネルメンバー更新',
+  //   functionName: 'setMemberList'
+  // },
   {
-    name: '1. チャンネルメンバー更新',
-    functionName: 'setMemberList'
-  },
-  {
-    name: '2. Slackへ投稿',
+    name: '1. Slackへ投稿',
     functionName: 'setMemberNamesToInpuSheetAndPostSlack'
   },
   // {
